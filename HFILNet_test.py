@@ -58,10 +58,15 @@ depth_root = opt.depth_path if opt.depth_path.endswith('/') else opt.depth_path 
 # Test-Loader direkt mit den übergebenen Argumenten füttern
 test_loader = test_dataset(image_root, gt_root, depth_root, opt.testsize)
 
+print('Start testing...')
+print(f'Total images to test: {test_loader.size}')
+
+
 torch.cuda.synchronize()  # Warten, bis alle GPU-Operationen abgeschlossen sind
 start_time = time.time()
 
 for i in range(test_loader.size):
+    print(f'Testing image {i + 1}/{test_loader.size}...')
     image, gt, depth, name, image_for_post = test_loader.load_data()
     gt = np.asarray(gt, np.float32)
     gt /= (gt.max() + 1e-8)
