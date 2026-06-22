@@ -39,7 +39,7 @@ elif opt.gpu_id == '1':
 
 # load the model
 model = HFILNet()
-model.load_state_dict(torch.load('caps/HFILNet_epoch_best.pth'))
+model.load_state_dict(torch.load('caps/HFILNet_epoch_best.pth'), strict=False)
 model.cuda()
 model.eval()
 
