@@ -818,7 +818,7 @@ class HFILNet(nn.Module):
 
         # ---------- Feature Integrity Learning and Refinement ------------------------------------------------
         shape = rgb.size()[2:]  # shape:(384,384)
-        end_out1, end_out2, end_out3, end_pose = self.pwv(fuse_fea1, fuse_fea2, fuse_fea3)
+        end_out1, end_out2, end_out3 = self.pwv(fuse_fea1, fuse_fea2, fuse_fea3)
         pred1 = F.interpolate(self.pred_end_out1(end_out1), size=shape, mode='bilinear')  # (b,1,384,384)
         pred2 = F.interpolate(self.pred_end_out2(end_out2), size=shape, mode='bilinear')  # (b,1,384,384)
         pred3 = F.interpolate(self.pred_end_out3(end_out3), size=shape, mode='bilinear')  # (b,1,384,384)
