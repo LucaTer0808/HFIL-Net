@@ -58,6 +58,7 @@ depth_root = opt.depth_path if opt.depth_path.endswith('/') else opt.depth_path 
 # Test-Loader direkt mit den übergebenen Argumenten füttern
 test_loader = test_dataset(image_root, gt_root, depth_root, opt.testsize)
 
+torch.cuda.synchronize()  # Warten, bis alle GPU-Operationen abgeschlossen sind
 start_time = time.time()
 
 for i in range(test_loader.size):
@@ -84,6 +85,8 @@ for i in range(test_loader.size):
 
     os.makedirs(os.path.dirname(save_path + name), exist_ok=True)
     cv2.imwrite(save_path + name, out3 * 255)
+
+torch.cuda.synchronize()  # Warten, bis alle GPU-Operationen abgeschlossen sind
 
 end_time = time.time()
 total_time = end_time - start_time
