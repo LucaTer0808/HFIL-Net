@@ -1,1 +1,3 @@
 caps/
+.venv/
+**/__pycache__/
