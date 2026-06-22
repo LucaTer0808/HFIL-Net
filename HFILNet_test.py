@@ -10,6 +10,7 @@ import torch
 import torch.nn.functional as F
 import sys
 import shutil
+import time
 
 sys.path.append('./models')
 import numpy as np
@@ -57,6 +58,8 @@ depth_root = opt.depth_path if opt.depth_path.endswith('/') else opt.depth_path 
 # Test-Loader direkt mit den übergebenen Argumenten füttern
 test_loader = test_dataset(image_root, gt_root, depth_root, opt.testsize)
 
+start_time = time.time()
+
 for i in range(test_loader.size):
     image, gt, depth, name, image_for_post = test_loader.load_data()
     gt = np.asarray(gt, np.float32)
@@ -81,6 +84,18 @@ for i in range(test_loader.size):
 
     os.makedirs(os.path.dirname(save_path + name), exist_ok=True)
     cv2.imwrite(save_path + name, out3 * 255)
+
+end_time = time.time()
+total_time = end_time - start_time
+time_per_image = total_time / test_loader.size
+print(f'Total testing time: {total_time:.2f} seconds')
+print(f'Average time per image: {time_per_image:.2f} seconds')
+
+eval_path = os.path.join(save_path, 'evaluate.txt')
+with open(eval_path, 'w') as f:
+    f.write(f'Total images tested: {test_loader.size}\n')
+    f.write(f'Total testing time: {total_time:.2f} seconds\n')
+    f.write(f'Average time per image: {time_per_image:.2f} seconds\n')
 
 print('Test Done!')
 
